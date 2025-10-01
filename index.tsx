@@ -1,3 +1,4 @@
+
 import { GoogleGenAI } from "@google/genai";
 
 const languages = ['English', 'Ibibio', 'Annang', 'Oron'];
@@ -232,6 +233,7 @@ const renderDashboard = () => {
         filteredModules.forEach(module => {
             const isComplete = !!state.progress[module.id];
             const progressPercentage = isComplete ? 100 : 0;
+            const buttonText = isComplete ? 'Review Lesson' : 'Start Learning';
             const card = document.createElement('div');
             card.className = "bg-white rounded-xl shadow-lg overflow-hidden transition-transform transform hover:-translate-y-1 flex flex-col";
             const adminControls = state.isAdmin ? `
@@ -254,7 +256,7 @@ const renderDashboard = () => {
                     </div>
                 </div>
                  <div class="p-4 border-t" data-module-id="${module.id}">
-                    <button class="view-module-btn w-full px-4 py-2 bg-green-600 text-white font-semibold rounded-lg shadow-sm hover:bg-green-700">View Module</button>
+                    <button class="view-module-btn w-full px-4 py-2 bg-green-600 text-white font-semibold rounded-lg shadow-sm hover:bg-green-700">${buttonText}</button>
                  </div>
             `;
             card.querySelector('.view-module-btn').addEventListener('click', () => viewModule(module));
@@ -485,7 +487,7 @@ const renderCommentsSection = () => {
     document.querySelectorAll('.approve-comment-btn').forEach(btn => btn.addEventListener('click', handleApproveComment));
     
     if (state.isAdmin) {
-      document.getElementById('save-comments-btn').onclick = () => showAdminSaveModal('Comments', comments);
+      document.getElementById('save-comments-btn').onclick = () => showAdminSaveModal('Comments', state.comments);
     }
 };
 
@@ -743,6 +745,26 @@ const showAdminSaveModal = (title, data) => {
     adminDataOutput.select();
 };
 
+const handleExportAllContent = () => {
+    const allContent = {
+        modules,
+        lessonNotes,
+        quizzes,
+        comments: state.comments,
+    };
+
+    const jsonString = JSON.stringify(allContent, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'content.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+};
+
 const handleSaveModule = (e) => {
     const target = e.currentTarget as HTMLButtonElement;
     const card = target.closest('.flex-col');
@@ -822,6 +844,11 @@ const initialize = () => {
     } else {
         navigateTo('landing');
         renderLandingPage();
+    }
+
+    const exportContentBtn = document.getElementById('export-content-btn');
+    if (exportContentBtn) {
+        exportContentBtn.addEventListener('click', handleExportAllContent);
     }
 
     searchInput.addEventListener('input', renderDashboard);
