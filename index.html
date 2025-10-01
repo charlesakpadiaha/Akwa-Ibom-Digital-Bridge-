@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Akwa Ibom Digital Bridge</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="index.css" />
+  <script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.21.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-gray-50">
+    <div id="admin-banner" class="hidden bg-yellow-400 text-black text-center font-bold p-2 sticky top-0 z-50 shadow-lg">
+        ADMIN MODE ENABLED
+    </div>
+
+    <!-- Landing Page Container -->
+    <div id="landing-page">
+        <div class="flex flex-col items-center justify-center min-h-screen p-4 text-center">
+            <header class="mb-12">
+                <img src="/aksglogo.png" alt="Akwa Ibom State Government Logo" class="w-40 h-40 mx-auto mb-6" />
+                <h1 class="text-4xl md:text-5xl font-bold text-green-700">Akwa Ibom Digital Bridge</h1>
+                <p class="mt-2 text-xl text-gray-600">Connecting communities with digital opportunities.</p>
+                <div class="max-w-2xl mx-auto mt-6 text-gray-700 text-lg leading-relaxed">
+                    <p class="font-bold">Bringing digital skills to everyone — in English and local languages.</p>
+                    <p class="mt-2">✅ Connect, empower, and thrive in a digital world.</p>
+                </div>
+            </header>
+            <main>
+                <h2 class="text-2xl font-semibold mb-6 text-gray-800">Select Your Language</h2>
+                <div id="language-selection" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <!-- Language buttons will be inserted here by JS -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Dashboard Page Container -->
+    <div id="dashboard-page" class="hidden">
+        <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 pb-20">
+            <header class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold text-green-700">Learning Modules</h1>
+                <button id="reset-language-btn" class="text-sm text-gray-600 hover:text-green-700">
+                    Change Language
+                </button>
+            </header>
+
+            <!-- Admin CMS Info Box -->
+            <div id="admin-info-box" class="hidden bg-blue-100 border-l-4 border-blue-500 text-blue-800 p-4 rounded-md mb-8 shadow">
+                <h3 class="font-bold text-lg">Admin Mode Instructions</h3>
+                <p class="mt-1">Access this view by adding <code class="bg-blue-200 text-sm font-mono p-1 rounded">?admin</code> to the URL and entering the password.</p>
+                <ul class="list-disc list-inside mt-2 space-y-1">
+                    <li>You can now <strong>click on text to edit it</strong> directly. A "Save" button will appear.</li>
+                    <li>In the lesson page, you can now <strong>Approve</strong> or <strong>Delete</strong> user comments.</li>
+                    <li>To make any changes permanent, <strong>copy the generated JSON and replace the old data in the `index.tsx` file.</strong></li>
+                </ul>
+            </div>
+
+
+            <div id="overall-progress-container" class="mb-8">
+                <!-- Overall progress bar will be inserted here by JS -->
+            </div>
+            
+            <div class="mb-8 relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <input
+                    id="search-input"
+                    type="text"
+                    placeholder="Search modules..."
+                    class="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    aria-label="Search modules"
+                />
+            </div>
+            
+            <div id="modules-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                 <!-- Module cards will be inserted here by JS -->
+            </div>
+            <div id="no-modules-found" class="text-center py-12 hidden">
+                <h3 class="text-xl font-semibold text-gray-700">No modules found</h3>
+                <p class="mt-1 text-gray-500">Try adjusting your search terms.</p>
+            </div>
+        </div>
+
+        <button id="help-fab" class="fixed bottom-24 right-6 bg-green-600 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-green-700 transition-transform transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-75" aria-label="Open AI Help Assistant">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.546-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- Lesson Page Container -->
+    <div id="lesson-page" class="hidden">
+        <div class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 pb-20">
+            <header class="mb-6">
+                <button id="back-to-dashboard-btn" class="text-green-600 hover:text-green-800">&larr; Back to Dashboard</button>
+                <h1 id="lesson-title" class="text-3xl font-bold text-gray-800 mt-2"></h1>
+            </header>
+            <main>
+                <div class="aspect-w-16 aspect-h-9 bg-black rounded-lg mb-6 overflow-hidden shadow-lg relative">
+                    <video id="lesson-video" controls class="w-full h-full">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div id="video-error" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-gray-900 text-white p-4 text-center">
+                        <!-- Error message injected by JS -->
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                      <h2 class="text-2xl font-semibold text-gray-800">Lesson Notes</h2>
+                      <div id="admin-notes-controls"></div>
+                    </div>
+                    <div id="lesson-notes-content">
+                        <!-- Lesson notes will be inserted here by JS -->
+                    </div>
+                </div>
+                <div class="bg-white p-6 sm:p-8 rounded-lg shadow-md mb-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-3xl font-bold text-gray-800 text-center flex-grow">Quiz</h2>
+                        <div id="admin-quiz-controls"></div>
+                    </div>
+                    <div id="quiz-container">
+                        <!-- Quiz content will be inserted here by JS -->
+                    </div>
+                </div>
+
+                <!-- Feedback Section -->
+                <div id="feedback-container" class="bg-white p-6 rounded-lg shadow-md mb-6">
+                     <!-- Feedback content will be inserted here by JS -->
+                </div>
+
+                <!-- Comments Section -->
+                <div id="comments-container" class="bg-white p-6 rounded-lg shadow-md">
+                    <!-- Comments content will be inserted here by JS -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- AI Help Modal -->
+    <div id="ai-help-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-60 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg flex flex-col" style="height: 70vh;">
+            <header class="p-4 border-b flex justify-between items-center bg-gray-50 rounded-t-2xl">
+                <h2 class="text-xl font-semibold text-gray-800">AI Assistant</h2>
+                <button id="close-help-modal-btn" class="text-gray-500 hover:text-gray-800" aria-label="Close help modal">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </header>
+            <div id="chat-history" class="flex-grow p-4 overflow-y-auto space-y-4">
+                <!-- Chat messages will be inserted here -->
+            </div>
+            <footer class="p-4 border-t bg-gray-50 rounded-b-2xl">
+                <div id="chat-loading-indicator" class="hidden text-sm text-gray-500 italic mb-2">
+                    AI is typing...
+                </div>
+                <form id="chat-form" class="flex items-center gap-2">
+                    <input id="chat-input" type="text" placeholder="Ask about video problems..." class="flex-grow py-2 px-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500" autocomplete="off">
+                    <button type="submit" class="bg-green-600 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-75" aria-label="Send message">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                        </svg>
+                    </button>
+                </form>
+            </footer>
+        </div>
+    </div>
+    
+    <!-- Admin Password Modal -->
+    <div id="admin-password-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-[100]">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-sm p-6">
+            <h2 class="text-xl font-bold text-center mb-4">Admin Access Required</h2>
+            <form id="admin-login-form">
+                <label for="admin-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <input type="password" id="admin-password" required class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+                <p id="admin-password-error" class="text-red-500 text-sm mt-1 h-4"></p>
+                <button type="submit" class="w-full mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700">Login</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Admin Data Modal -->
+    <div id="admin-data-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-[100]">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl flex flex-col" style="max-height: 90vh;">
+            <header class="p-4 border-b flex justify-between items-center sticky top-0 bg-white rounded-t-lg">
+                <h2 id="admin-data-title" class="text-xl font-semibold">Updated Content Data</h2>
+                <button id="close-admin-data-modal-btn" class="text-gray-500 hover:text-gray-800 text-3xl leading-none">&times;</button>
+            </header>
+            <div class="p-4 flex-grow overflow-y-auto">
+                <p class="mb-2 text-sm text-gray-600">Copy the JSON below and replace the corresponding object in your <code>index.tsx</code> file.</p>
+                <textarea id="admin-data-output" readonly class="w-full h-96 font-mono text-sm bg-gray-100 p-2 rounded border focus:outline-none focus:ring-2 focus:ring-green-500"></textarea>
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="bg-orange-500 text-white text-center p-4">
+        <p>&copy; 2025, Ministry of Education, Akwa Ibom State.</p>
+    </footer>
+
+    <script type="module" src="index.tsx"></script>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
